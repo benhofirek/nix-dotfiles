@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   programs.zsh = {
     enable = true;
@@ -17,6 +19,11 @@
       extended = true;
     };
 
-    initContent = builtins.readFile ./config.zsh;
+    initContent = builtins.readFile ./config.zsh + ''
+      # secrets from sops-nix
+      if [ -r "${config.sops.secrets.deepseek_api_key.path}" ]; then
+        export DEEPSEEK_API_KEY="$(cat ${config.sops.secrets.deepseek_api_key.path})"
+      fi
+    '';
   };
 }

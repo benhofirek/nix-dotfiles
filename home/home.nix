@@ -70,7 +70,9 @@
     lima
     ethtool
     opentofu
-    opentofu-ls
+    appimage-run
+    ast-grep
+    repomix
 
     # ── Nix tooling ───────────────────────────
     comma
@@ -163,6 +165,7 @@
 
     # ── Infra & config languages ──────────────
     terraform-ls
+    tofu-ls
     tflint
     dockerfile-language-server
     docker-compose-language-service

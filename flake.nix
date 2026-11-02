@@ -6,6 +6,7 @@
 
     import-tree.url = "github:vic/import-tree";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    omp.url = "github:can1357/oh-my-pi";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -30,6 +31,21 @@
     plover-flake = {
       url = "github:openstenoproject/plover-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    matt-pocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+
+    ponytail-skills = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
+
+    caveman-skills = {
+      url = "github:JuliusBrussee/caveman/";
+      flake = false;
     };
 
   };
@@ -100,6 +116,7 @@
                     (import-tree ./home)
                     inputs.plover-flake.homeManagerModules.plover
                     inputs.nix-index-database.homeModules.default
+                    inputs.omp.homeManagerModules.default
                   ]
                   ++ lib.optional (builtins.pathExists ./hosts/${hostname}/home.nix) ./hosts/${hostname}/home.nix;
                 };

@@ -52,6 +52,7 @@ bindkey '^[OA' _atuin_search_widget
 
 # Jujutsu
 alias j='jj'
+alias 'j w'='jj workspace'
 alias jw="watch -n 0.5 -t --color 'jj --ignore-working-copy log -n 20 --color=always'"
 
 # Eza
@@ -63,6 +64,9 @@ alias n='nvim'
 # Steno
 alias stenodev='find ~/steno-dictionary/steno -name "*.steno" | entr -c ~/steno-dictionary/scripts/checker/target/release/checker'
 
+# Completions
+eval "$(omp completions zsh)"
+
 # Tuicr
 t() {
     if [[ $# -eq 0 ]]; then
@@ -70,4 +74,55 @@ t() {
     else
         tuicr "$@"
     fi
+}
+
+# Run Pi directly, with tmux smart-navigation support
+pi() {
+  local pane="${TMUX_PANE:-}"
+  local status
+
+  if [[ -n "$pane" ]]; then
+    tmux set-option -p -t "$pane" @pi_mode 1 2>/dev/null
+  fi
+
+  command pi "$@"
+  status=$?
+
+  if [[ -n "$pane" ]]; then
+    tmux set-option -pu -t "$pane" @pi_mode 2>/dev/null
+  fi
+
+  return $status
+}
+
+# Run Pi inside Podman sandbox, with tmux smart-navigation support
+pis() {
+  local image=pi-sandbox
+  local dir="$HOME/.pi"
+  local pane="${TMUX_PANE:-}"
+  local status
+
+  if ! podman image exists "$image"; then
+    podman build -t "$image" -f "$dir/Dockerfile.pi" "$dir" || return
+  fi
+
+  if [[ -n "$pane" ]]; then
+    tmux set-option -p -t "$pane" @pi_mode 1 2>/dev/null
+  fi
+
+  podman run --rm -it \
+    -e DEEPSEEK_API_KEY \
+    -v "$PWD:/workspace" \
+    -v /nix/store:/nix/store:ro \
+    -v "$dir/agent:/root/.pi/agent" \
+    -v "$HOME/.agents:/root/.agents" \
+    "$image" "$@"
+
+  status=$?
+
+  if [[ -n "$pane" ]]; then
+    tmux set-option -pu -t "$pane" @pi_mode 2>/dev/null
+  fi
+
+  return $status
 }
