@@ -33,6 +33,8 @@
     man-pages
     tealdeer
     unzip
+    nftables
+    netcat
 
     # ── Search & text processing ──────────────
     jq
@@ -65,6 +67,10 @@
     entr
     hyperfine
     tokei
+    lima
+    ethtool
+    opentofu
+    opentofu-ls
 
     # ── Nix tooling ───────────────────────────
     comma
