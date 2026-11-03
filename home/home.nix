@@ -12,8 +12,18 @@
   home.username = username;
   home.homeDirectory =
     if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${username}" else "/home/${username}";
+
   home.stateVersion = "26.05";
   home.backupFileExtension = "backup";
+
+  gtk = {
+    enable = true;
+    colorScheme = "light";
+  };
+
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-light";
+  };
 
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 

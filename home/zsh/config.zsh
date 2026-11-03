@@ -28,6 +28,9 @@ fi
 
 eval "$(direnv hook zsh)"
 
+# Make direnv silent when opening new shell
+export DIRENV_LOG_FORMAT=""
+
 # Clipboard - shouldn't be needed, everything should be handled inside tmux
 # yank (y{motion}) in vi normal mode also goes to the system clipboard
 #_vi_yank_clip() { zle vi-yank; print -rn -- "$CUTBUFFER" | wl-copy }
