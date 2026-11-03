@@ -6,8 +6,8 @@
 
     settings = {
       user = {
-        name = "Benedikt Hofirek";
-        email = "benedikthofirek@gmail.com";
+        name = "Ben Hofirek";
+        email = "benhofirek@gmail.com";
       };
 
       ui = {

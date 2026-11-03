@@ -177,10 +177,10 @@ return {
           },
           options = {
             nixos = {
-              expr = '(builtins.getFlake "github:BenediktHofirek/nix-dotfiles").nixosConfigurations.laptop.options',
+              expr = '(builtins.getFlake "github:benhofirek/nix-dotfiles").nixosConfigurations.laptop.options',
             },
             home_manager = {
-              expr = '(builtins.getFlake "github:BenediktHofirek/nix-dotfiles").nixosConfigurations.laptop.options',
+              expr = '(builtins.getFlake "github:benhofirek/nix-dotfiles").nixosConfigurations.laptop.options',
             },
           },
         },

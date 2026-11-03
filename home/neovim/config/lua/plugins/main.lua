@@ -146,7 +146,7 @@ return {
       has_line_number = true,
       bg_padding = 0,
       has_breadcrumbs = true,
-      watermark = 'Benedikt Hofirek',
+      watermark = 'Ben Hofirek',
     },
   },
 

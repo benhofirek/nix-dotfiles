@@ -73,6 +73,7 @@
     appimage-run
     ast-grep
     repomix
+    awscli2
 
     # ── Nix tooling ───────────────────────────
     comma

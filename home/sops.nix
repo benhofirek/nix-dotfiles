@@ -35,7 +35,7 @@ in
         path = "${config.xdg.configHome}/gh/hosts.yml";
         content = ''
           github.com:
-            user: BenediktHofirek
+            user: benhofirek
             git_protocol: ssh
             oauth_token: ${config.sops.placeholder.github_oauth_token}
         '';

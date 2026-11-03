@@ -26,6 +26,8 @@ if [[ -o interactive && -z "$TMUX" ]]; then
   tmux -S "/tmp/tmux-$$.sock"
 fi
 
+eval "$(direnv hook zsh)"
+
 # Clipboard - shouldn't be needed, everything should be handled inside tmux
 # yank (y{motion}) in vi normal mode also goes to the system clipboard
 #_vi_yank_clip() { zle vi-yank; print -rn -- "$CUTBUFFER" | wl-copy }

@@ -25,4 +25,9 @@
       "podman"
     ];
   };
+
+  systemd.user.sockets.podman = {
+    enable = true;
+    wantedBy = [ "sockets.target" ];
+  };
 }
