@@ -45,6 +45,7 @@
     unzip
     nftables
     netcat
+    dig
 
     # ── Search & text processing ──────────────
     jq
