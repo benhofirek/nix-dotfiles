@@ -104,12 +104,12 @@ bind_command("Z", exec(scripts .. "/wifi-toggle.py"))
 
 repeat_bind(
     "XF86AudioRaiseVolume",
-    exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")
+    exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+")
 )
 
 repeat_bind(
     "XF86AudioLowerVolume",
-    exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
+    exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-")
 )
 
 -- Laptop brightness

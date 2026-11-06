@@ -53,6 +53,10 @@ export DIRENV_LOG_FORMAT=""
 bindkey '^[[A' _atuin_search_widget
 bindkey '^[OA' _atuin_search_widget
 
+# Normalize command editation
+bindkey '^U' backward-kill-line
+bindkey '^K' kill-line
+
 # Aliases
 
 # Jujutsu
