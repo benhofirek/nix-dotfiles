@@ -1,46 +1,77 @@
-{ pkgs, ... }: 
+{ pkgs, ... }:
 
+let
+  # ---- Tunables (conservative values; adjust here only) ----
+  coreMaxKhz = 4500000; # core frequency cap, kHz (4.5 GHz)
+  uncoreMaxKhz = 4000000; # uncore / ring-bus cap, kHz (4.0 GHz)
+  epp = "balance_power"; # "power" is even cooler
+  tempTarget = 75; # throttle at 75°C
+  pl1 = {
+    limit = 55;
+    window = 28;
+  };
+  pl2 = {
+    limit = 65;
+    window = 0.002;
+  };
+  requireUncoreInterface = true; # fail loudly if the uncore cap can't be applied
+in
 {
+  # Needed by undervolt to access the MSRs
+  boot.kernelModules = [ "msr" ];
+
+  # ---- Core frequency governor and cap ----
   powerManagement = {
     cpuFreqGovernor = "powersave";
-    cpufreq.max = 4500000; # 4500000 kHz = 4.5 GHz
+    cpufreq.max = coreMaxKhz;
   };
 
-  # 2. Intel Undervolt Service Configuration
+  # ---- Power limits + thermal throttle point ----
   services.undervolt = {
     enable = true;
-    coreOffset = 0;       # CPU & CPU Cache
-    gpuOffset = 0;        # GPU
-    uncoreOffset = 0;     # System Agent / Uncore
-    analogioOffset = 0;   # Analog I/O
-    p2 = {
-      limit = 100;
-      window = 0.002;     # Short power limit window
-    };
-    p1 = {
-      limit = 85;
-      window = 28.0;      # Long power limit window
-    };
-    temp = -20;           # Critical Temperature Offset
+    useTimer = true;
+    temp = tempTarget;
+    p1 = pl1;
+    p2 = pl2;
   };
 
-  # 3. Declarative Systemd Service for Uncore Caps & EPP Tuning
-  # Handles sysfs writes for uncore frequency and Energy Performance Preference (EPP)
-  systemd.services.cpu-tuning = {
-    description = "Apply Intel Uncore frequency limits and EPP preferences";
+  # ---- turbo off - not needed, handled by frequency cap
+  #systemd.tmpfiles.rules = [
+  #  "w /sys/devices/system/cpu/intel_pstate/no_turbo - - - - 1"
+  #];
+
+  # ---- EPP + uncore frequency cap ----
+  systemd.services.intel-cpu-tuning = {
+    description = "Apply Intel CPU EPP and uncore frequency limits";
     wantedBy = [ "multi-user.target" ];
-    after = [ "multi-user.target" ];
+    after = [ "systemd-modules-load.service" ];
+    wants = [ "systemd-modules-load.service" ];
+
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "cpu-tuning-script" ''
-        # Cap Uncore (Ring Bus) to 4.0GHz (4000000 kHz)
-        if [ -d "/sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00" ]; then
-            echo 4000000 > /sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00/max_freq_khz
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "intel-cpu-tuning" ''
+        set -euo pipefail
+
+        # Energy Performance Preference on every CPU
+        for f in /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference; do
+          if [[ -e "$f" ]]; then
+            echo ${epp} > "$f"
+          fi
+        done
+
+        # Uncore / ring-bus frequency cap on every package/die
+        uncore_dir=/sys/devices/system/cpu/intel_uncore_frequency
+
+        if [[ ! -d "$uncore_dir" ]]; then
+          echo "intel_uncore_frequency interface not found" >&2
+          ${if requireUncoreInterface then "exit 1" else "exit 0"}
         fi
 
-        # Set Energy Performance Preference (EPP) to 'balance_power'
-        for epp in /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference; do
-            [ -f "$epp" ] && echo "balance_power" > "$epp"
+        for d in "$uncore_dir"/*/; do
+          if [[ -e "$d/max_freq_khz" ]]; then
+            echo ${toString uncoreMaxKhz} > "$d/max_freq_khz"
+          fi
         done
       '';
     };

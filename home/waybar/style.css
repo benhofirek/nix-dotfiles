@@ -1,0 +1,175 @@
+@define-color highlight rgba(117, 241, 250, 1);
+@define-color dark-9 rgba(24, 24, 27, 1);
+@define-color dark-8 rgba(39, 39, 42, 1);
+@define-color dark-7 rgba(63, 63, 70, 1);
+@define-color dark-6 rgba(82, 82, 91, 1);
+@define-color dark-5 rgba(113, 113, 122, 1);
+
+* {
+  font-family: "CaskaydiaCove Nerd Font Mono", "Caskaydia Nerd Font Mono";
+  font-size: 18px;
+}
+
+window#waybar {
+  background-color: transparent;
+  color: white;
+}
+
+/* ---------- Shared workspace button reset ---------- */
+#workspaces button {
+  all: unset; /* kills GTK default border/shadow/background */
+  min-width: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: white;
+  background: transparent;
+  transition: none;
+}
+
+#workspaces button:hover {
+  background: @dark-6;
+}
+
+#workspaces button.active {
+  background: @highlight;
+  color: black;
+  font-weight: 700;
+}
+
+#workspaces button.urgent {
+  background: #ff5555;
+  color: black;
+}
+
+/* ==========================================================
+   Side bar (external monitors, vertical, transparent)
+   Option A: dark glass pill + calm blue highlight
+   ========================================================== */
+window#waybar.workspaceBar,
+window#waybar.workspaceBar .modules-left,
+window#waybar.workspaceBar .modules-center,
+window#waybar.workspaceBar .modules-right {
+  background: transparent;
+}
+
+window#waybar.workspaceBar #workspaces {
+  background: rgba(24, 24, 27, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  margin: 7px 7px 7px 0;
+  padding: 4px;
+}
+
+window#waybar.workspaceBar #workspaces button {
+  margin: 2px 0;
+  padding: 6px 4px;
+  min-width: 24px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+window#waybar.workspaceBar #workspaces button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+window#waybar.workspaceBar #workspaces button.active {
+  background: #3b82f6;
+  color: white;
+  font-weight: 700;
+}
+
+window#waybar.workspaceBar #workspaces button.urgent {
+  background: #ff5555;
+  color: black;
+}
+
+/* ==========================================================
+   Top bar (laptop screen)
+   ========================================================== */
+window#waybar.mainBar #workspaces {
+  background: @dark-8;
+  border-radius: 8px;
+  margin: 5px 10px 5px 5px;
+  padding: 0 4px;
+}
+
+window#waybar.mainBar #workspaces button {
+  margin: 3px 2px;
+}
+
+/* ---------- Pill modules ---------- */
+#submap,
+#battery,
+#bluetooth,
+#network,
+#cpu,
+#memory,
+#volume,
+#clock {
+  border-radius: 8px;
+  padding: 5px 8px;
+  background: @dark-8;
+  margin: 5px 10px 5px 0;
+}
+
+#clock {
+  margin-right: 0;
+}
+
+#battery.charging {
+  color: #42ff9f;
+}
+
+#battery.warning:not(.charging) {
+  color: #ffb86c;
+}
+
+#battery.critical:not(.charging) {
+  color: #ff5555;
+}
+
+/* ---------- Volume group ---------- */
+#pulseaudio {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+#pulseaudio-slider {
+  padding: 0;
+  margin: 0 0 0 8px;
+}
+
+#pulseaudio-slider slider {
+  all: unset;
+  min-height: 0;
+  min-width: 0;
+  opacity: 0;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+  min-height: 8px;
+  min-width: 75px;
+  border-radius: 5px;
+  background: @dark-7;
+}
+
+#pulseaudio-slider highlight {
+  min-width: 10px;
+  border-radius: 5px;
+  background: @highlight;
+}
+
+/* ---------- Tooltips ---------- */
+tooltip {
+  background: @dark-9;
+  border-radius: 5px;
+}
+
+tooltip label {
+  color: white;
+}

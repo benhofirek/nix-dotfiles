@@ -1,6 +1,13 @@
-{ inputs, username, hostname, lib, ... }: {
+{
+  inputs,
+  username,
+  hostname,
+  lib,
+  ...
+}:
+{
   imports = [
-    ../laptop/configuration.nix            # reuse the whole laptop system
+    ../laptop/configuration.nix # reuse the whole laptop system
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -10,6 +17,10 @@
     users.${username}.imports = [
       (inputs.import-tree ../../home)
     ];
+  };
+
+  services.displayManager.autoLogin = {
+    enable = lib.mkForce true;
   };
 
   virtualisation.vmVariant = {
@@ -26,7 +37,11 @@
         "-display gtk,gl=on"
       ];
       forwardPorts = [
-        { from = "host"; host.port = 2222; guest.port = 22; }
+        {
+          from = "host";
+          host.port = 2222;
+          guest.port = 22;
+        }
       ];
     };
   };
