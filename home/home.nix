@@ -85,6 +85,8 @@
     ast-grep
     repomix
     awscli2
+    kind
+    kubectl
 
     # ── Nix tooling ───────────────────────────
     comma

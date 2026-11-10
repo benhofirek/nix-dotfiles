@@ -30,4 +30,9 @@
     enable = true;
     wantedBy = [ "sockets.target" ];
   };
+
+  # make kind (k8s in docker) work seamlessly
+  systemd.services."user@" = {
+    serviceConfig.Delegate = "yes";
+  };
 }
