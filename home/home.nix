@@ -103,7 +103,7 @@
     podman-desktop
 
     # ── Database clients ──────────────────────
-    rainfrog
+    # rainfrog
     harlequin
     dblab
 

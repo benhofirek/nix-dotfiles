@@ -21,7 +21,6 @@ in
   # Make startup less noisy
   boot = {
     consoleLogLevel = 0;
-    initrd.verbose = false;
     kernelParams = [
       "quiet"
       "loglevel=3"

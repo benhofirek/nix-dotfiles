@@ -239,6 +239,7 @@ return {
       'vtsls',
       'vue_ls',
       'nixd',
+      'helm_ls',
     })
   end,
 }
