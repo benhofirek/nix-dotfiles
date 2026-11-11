@@ -87,6 +87,9 @@
     awscli2
     kind
     kubectl
+    kubecolor
+    kubectx
+    kubernetes-helm
 
     # ── Nix tooling ───────────────────────────
     comma

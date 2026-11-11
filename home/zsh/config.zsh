@@ -59,6 +59,9 @@ bindkey '^K' kill-line
 
 # Aliases
 
+# K8s
+alias k=kubectl
+
 # Jujutsu
 alias j='jj'
 alias 'j w'='jj workspace'
@@ -75,6 +78,9 @@ alias stenodev='find ~/steno-dictionary/steno -name "*.steno" | entr -c ~/steno-
 
 # Completions
 eval "$(omp completions zsh)"
+source <(helm completion zsh)
+source <(kubectl completion zsh)
+source <(kind completion zsh)
 
 # Tuicr
 t() {
